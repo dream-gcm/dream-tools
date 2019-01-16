@@ -77,7 +77,7 @@ def showcmap(cmap):
 
 
 
-def plotmap(fig1,ehonan,nav_lon,nav_lat,cm_base='viridis',plto='tmp_plot',vmin='0',vmax='0',Nincr=10,typlo='contourf',Nbar=10,glo=True,coastL=False,coastC=False,xlim=(0,10),ylim=(0,10),su='b',so='k',loncentr=0.,labelplt=""):
+def plotmap(fig1,ehonan,nav_lon,nav_lat,cm_base='viridis',plto='tmp_plot',vmin='0',vmax='0',Nincr=10,typlo='contourf',Nbar=10,glo=True,coastL=False,coastC=False,xlim=(0,10),ylim=(0,10),su='b',so='k',loncentr=0.,latcentr=0.,labelplt="",gloproj='Robinson'):
         '''
         PURPOSE: Plot regional or global map of gridded data (shading).
         Uses Cartopy, xarray, matplotlib, numpy.
@@ -149,7 +149,10 @@ typlo:='contourf'
         #       be set to ccrs.PlateCarree() whatever the map projection is.
         
         if glo:
-            ax = plt.axes(projection=ccrs.Robinson(central_longitude=loncentr))
+            if gloproj=='Robinson':
+                ax = plt.axes(projection=ccrs.Robinson(central_longitude=loncentr))
+            if gloproj=='Orthographic':
+                ax = plt.axes(projection=ccrs.Orthographic(central_longitude=loncentr,central_latitude=latcentr))
             # marker size
             sm=0.1
         else:
