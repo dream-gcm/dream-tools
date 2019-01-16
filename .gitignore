@@ -1,0 +1,15 @@
+# this file sets up which files are taken into account by git and which are ignored in this repository
+
+# work in progress notebooks will be ingnore
+wip*
+
+# plots will be ignore
+*.png
+*.jpg
+*.pdf
+*.eps
+*.ps
+
+# python stuff
+./__pycache__/
+
