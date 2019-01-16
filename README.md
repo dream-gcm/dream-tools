@@ -1,5 +1,5 @@
 # TOOLS
-This is a collection of examples of tools to work with the DREAM outputs (plots, analysis, etc).
+This is a collection of tools (mostly in python and jupyter notebooks) giving examples how to work with the DREAM outputs (plots, analysis, etc).
 
 ### To download these codes:
 ```git clone https://github.com/dream-gcm/dream-tools.git```
