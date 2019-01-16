@@ -2,9 +2,9 @@ This repository contains  a collection of tools (mostly in python and jupyter no
 
 ### To download these codes:
 ```git clone https://github.com/dream-gcm/dream-tools.git```
-This will download and install a ```dream-tool``` directory in your local computer.
+This will download and install a ```dream-tool``` directory on your local computer.
 
-### Then to update these codes: 
+### Then to update these codes from time to time: 
 ```git pull``` (from your local ```dream-tool``` directory).
 
 ### To ask questions, comment, contribute, please uses the pull-requests and  issues sections above.
