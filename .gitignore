@@ -11,5 +11,5 @@ wip*
 *.ps
 
 # python stuff
-./__pycache__/
+./__pycache__
 
