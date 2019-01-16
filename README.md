@@ -7,6 +7,6 @@ This will download and install a ```dream-tool``` directory on your local comput
 ### Then to update these codes from time to time: 
 ```git pull``` (from your local ```dream-tool``` directory).
 
-### To ask questions, comment, contribute, please uses the pull-requests and  issues sections above.
+### To ask questions, comment, contribute, please use the pull-requests and  issues sections above.
 
 
