@@ -77,28 +77,29 @@ def showcmap(cmap):
 
 
 
-def plotmap(fig1,ehonan,nav_lon,nav_lat,cm_base='viridis',plto='tmp_plot',vmin='0',vmax='0',Nincr=10,typlo='contourf',Nbar=10,glo=True,coastL=False,coastC=False,xlim=(0,10),ylim=(0,10),su='b',so='k',loncentr=0.,latcentr=0.,labelplt="",gloproj='Robinson'):
+def plotmap(fig1,ehonan,nav_lon,nav_lat,plto='tmp_plot',cm_base='viridis',vmin='0',vmax='0',Nincr=10,typlo='contourf',Nbar=10,glo=True,coastL=False,coastC=False,xlim=(0,10), ylim=(0,10),su='b',so='k',loncentr=0.,latcentr=0.,labelplt="",gloproj='Robinson',edgcol1='#585858',edgcol2='w'):
         '''
         PURPOSE: Plot regional or global map of gridded data (shading).
         Uses Cartopy, xarray, matplotlib, numpy.
         
         ARGUMENTS: 
         fig1: fig id,
-        ehonan: 2-d array to plot (geographical data)
-        nav_lon: corresponding lon array . Works with lat and lon given as 1-d vectors (if regular grid such as DREAM model) or 2-d arrays (unregular grid such as the ORCA-NEMO-grid)
+        ehonan: 2-d array (xarray or np.array of 2 dims) to plot (geographical data)
+        nav_lon: corresponding lon array . Works with lat and lon given as 1-d vectors (if regular grid such as DREAM model) 
+                or 2-d arrays (unregular grid such as the ORCA-NEMO-grid)
         nav_lat: corresponding lat array
         
-        OPTIONS: (Note that you can omit these options when calling the plot function and in this case defaut values are applied.)
+        OPTIONS: (Note that you can ommit these options when calling the plot function and in this case defaut values are applied. Note also that t
+        he order in which he options are given does no matter.)
         - cm_base: colormap (defaut=cm.viridis)
         - plto: plo name (defaut='tmpplot')
         - vmin: data min value to plot (color shading) (defaut vmin='0')
         - vmax: data max value to plot (color shading) (defaut vmax='0')
         - Nincr: number of color segments of the colormap (defaut Nincr=10)
         - typlo: type of plot (can be 'contourf', 'pcolormesh' or 'scatter', defaut is contourf, 'scater is not yet fully implemented')
-typlo:='contourf'
- : True or False. Type of plotting function (if false then contourf is used)
         - Nbar: number of labels on the colorbar (defaut Nbar=10)
         - glo: global=True (default) sets that  map is global (the projection will be Robinson in nthat case). It is PlateCarre if regional map.
+        - gloproj: Projection if global plot. Can be 'Robinson' (defaut) or 'Orthographic'.
         - coastL: set to True  to plot continents as lines (defaut is False)
         - coastC: set to True to fill continents with colors
         - xlim: set regional limits in longitude (degrees) if glo==False (default xlim=(0,10))
@@ -107,6 +108,9 @@ typlo:='contourf'
         - so: set the color of the values over vmax (appears as a triangle at the edge of the colorbar). Defaut is 'k' black.
         - loncentr: longitude to center the map projectionn (defaut is 0).
         - labelplt: label of the colorbar (defaut is nothing)
+        - edgcol1: color of the line around the global proj, defaut is '#585858'
+        - edgcol2: color of the frame around the regional map, defaut is 'w'
+    
         
         LEFT-TO-DO:
         * Some color choices (for gridlines, for labels, for continents) are still coded in hard below. 
@@ -143,6 +147,9 @@ typlo:='contourf'
             levels = mticker.MaxNLocator(nbins=Nincr).tick_values(vmin, vmax)
         norm   = mcolors.BoundaryNorm(levels, ncolors=cmap.N,clip=True)
         
+        
+        
+        
         # Projection
         trdata  = ccrs.PlateCarree() 
         # Note: if data points are given in classical lat lon coordinates this should
@@ -164,9 +171,9 @@ typlo:='contourf'
             ax.set_global() 
             
         if glo:
-            ax.outline_patch.set_edgecolor('#585858')
+            ax.outline_patch.set_edgecolor(edgcol1)
         else:
-            ax.outline_patch.set_edgecolor('white')
+            ax.outline_patch.set_edgecolor(edgcol2)
             
 
         # grid on map
@@ -185,7 +192,7 @@ typlo:='contourf'
        
         # Add Coastlines and or plain continents
         if coastC:
-            ax.add_feature(ccf.LAND, facecolor='#585858', edgecolor='none')
+            ax.add_feature(ccf.LAND, facecolor='w', edgecolor='none')
         if coastL:
             ax.coastlines(color='#585858')
         
