@@ -2,7 +2,7 @@ This repository contains  a collection of tools (mostly in python and jupyter no
 
 ### To download these notebooks and codes:
 ```git clone https://github.com/dream-gcm/dream-tools.git```
-This will download and install a ```dream-tool``` directory on your local computer.
+This will download and install a ```dream-tool``` directory in the current directory on your local computer.
 
 ### Then to update these notebooks and codes from time to time: 
 ```git pull``` (from your local ```dream-tool``` directory).
