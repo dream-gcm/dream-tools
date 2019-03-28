@@ -17,10 +17,12 @@ wip*
 
 # mac files
 .DS_Store
+.DS_Store/
 
 # temp DREAM model files
 fort.*
 
 # python stuff
 ./__pycache__
+.ipynb_checkpoints/
 
