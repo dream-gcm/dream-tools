@@ -10,6 +10,17 @@ wip*
 *.eps
 *.ps
 
+# data files
+*.nc
+*.b
+*.nc4
+
+# mac files
+.DS_Store
+
+# temp DREAM model files
+fort.*
+
 # python stuff
 ./__pycache__
 

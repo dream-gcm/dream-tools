@@ -83,13 +83,13 @@ def plotmap(fig1,ehonan,nav_lon,nav_lat,plto='tmp_plot',cm_base='viridis',vmin='
         Uses Cartopy, xarray, matplotlib, numpy.
         
         ARGUMENTS: 
-        fig1: fig id,
-        ehonan: 2-d array (xarray or np.array of 2 dims) to plot (geographical data)
-        nav_lon: corresponding lon array . Works with lat and lon given as 1-d vectors (if regular grid such as DREAM model) 
+        * fig1: figure id,
+        * ehonan: the 2-d array of geographical data to plot (xarray or np.array of 2 dims) 
+        * nav_lon: corresponding longitude  array. Works with longitude given as 1-d vectors (if regular grid such as DREAM model) 
                 or 2-d arrays (unregular grid such as the ORCA-NEMO-grid)
-        nav_lat: corresponding lat array
+        * nav_lat: corresponding lat array
         
-        OPTIONS: (Note that you can ommit these options when calling the plot function and in this case defaut values are applied. Note also that t
+        OPTIONS: (Note that you can ommit these options when calling the plot function and in this case the defaut values are applied. Note also that t
         he order in which he options are given does no matter.)
         - cm_base: colormap (defaut=cm.viridis)
         - plto: plo name (defaut='tmpplot')
@@ -111,11 +111,6 @@ def plotmap(fig1,ehonan,nav_lon,nav_lat,plto='tmp_plot',cm_base='viridis',vmin='
         - edgcol1: color of the line around the global proj, defaut is '#585858'
         - edgcol2: color of the frame around the regional map, defaut is 'w'
     
-        
-        LEFT-TO-DO:
-        * Some color choices (for gridlines, for labels, for continents) are still coded in hard below. 
-        They will be added as options in a later version of this code.
-        
         '''
         
         ## imports
@@ -142,19 +137,23 @@ def plotmap(fig1,ehonan,nav_lon,nav_lat,plto='tmp_plot',cm_base='viridis',vmin='
         cmap.set_over(so,1.) 
         
         if ((vmin==0)&(vmax==0)):
+            # case if no vmin and vmax values were given in the options
             levels = mticker.MaxNLocator(nbins=Nincr).tick_values(ehonan.min(), ehonan.max())        
         else:
+            # case if vmin and vmax values are given in the options
             levels = mticker.MaxNLocator(nbins=Nincr).tick_values(vmin, vmax)
         norm   = mcolors.BoundaryNorm(levels, ncolors=cmap.N,clip=True)
         
         
         
         
-        # Projection
-        trdata  = ccrs.PlateCarree() 
-        # Note: if data points are given in classical lat lon coordinates this should
-        #       be set to ccrs.PlateCarree() whatever the map projection is.
+        # Projection:
         
+        # format of x,y coordinates givenn as argument
+        # Note: if data points are given in classical lat lon coordinates this should
+        #       be set to ccrs.PlateCarree() whatever the MAP projection is. See Cartopy doc for more details.
+        trdata  = ccrs.PlateCarree() 
+          
         if glo:
             if gloproj=='Robinson':
                 ax = plt.axes(projection=ccrs.Robinson(central_longitude=loncentr))
@@ -166,17 +165,15 @@ def plotmap(fig1,ehonan,nav_lon,nav_lat,plto='tmp_plot',cm_base='viridis',vmin='
             ax = plt.axes(projection= ccrs.PlateCarree())
             # marker size
             sm=0.5
-        
+
         if glo:
             ax.set_global() 
-            
-        if glo:
             ax.outline_patch.set_edgecolor(edgcol1)
         else:
             ax.outline_patch.set_edgecolor(edgcol2)
             
 
-        # grid on map
+        # grid and grid labels on map
         if glo:
             gl = ax.gridlines(linewidth=1, color='#585858', alpha=0.2, linestyle='--') 
         else:
