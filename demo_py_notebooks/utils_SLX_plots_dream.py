@@ -60,6 +60,35 @@ def make_NCLcolormap(reverse=False):
 
     return(my_cmap_NCLbipo)
 
+def make_SLXcolormap(reverse=False,whichco='MJO'):
+    ''' Define a custom cmap .
+    Parameters: 
+    * Reverse (default=False). If true, will  create the reverse colormap
+    * whichco (default='MJO': which colors to use. For now: only 'MJO', 'NCL', 'NCL_NOWI' available.
+    ''' 
+
+    ### colors to include in my custom colormap
+    if whichco=='MJO':
+        colors_NCLbipo=[(176,17,3,1),(255,56,8,1),(255,196,1,1),(255,255,255,1),(255,255,255,1),(13,176,255,1),(2,88,255,1),(0,10,174,1)]
+
+    if whichco=='NCL':
+        colors_NCLbipo=[(11,76,95),(0,97,128),(0,161,191),(0,191,224),(0,250,250),(102,252,252),(153,250,250),(255,255,255),(255,255,255),(252,224,0),(252,191,0),(252,128,0),(252,64,0),(252,33,0),(128,0,0),(0,0,0)]
+
+    if whichco=='NCL_NOWI':
+        colors_NCLbipo=[(11,76,95),(0,97,128),(0,161,191),(0,191,224),(0,250,250),(102,252,252),(153,250,250),(255,255,255),(252,224,0),(252,191,0),(252,128,0),(252,64,0),(252,33,0),(128,0,0),(0,0,0)]
+
+    ### Call the function make_cmap which returns my colormap
+    my_cmap_NCLbipo = make_cmap(colors_NCLbipo[:], bit=True)
+    my_cmap_NCLbipo_r = make_cmap(colors_NCLbipo[::-1], bit=True)
+    
+    if reverse==True:
+        my_cmap_NCLbipo = my_cmap_NCLbipo_r
+
+    return(my_cmap_NCLbipo)
+
+
+    
+    
     
 def showcmap(cmap):  
         ''' Just make a color plot of random matrix to show the cmap colormap given as argument.
@@ -77,7 +106,7 @@ def showcmap(cmap):
 
 
 
-def plotmap(fig1,ehonan,nav_lon,nav_lat,plto='tmp_plot',cm_base='viridis',vmin='0',vmax='0',Nincr=10,typlo='contourf',Nbar=10,glo=True,coastL=False,coastC=False,xlim=(0,10), ylim=(0,10),su='b',so='k',loncentr=0.,latcentr=0.,labelplt="",gloproj='Robinson',edgcol1='#585858',edgcol2='w'):
+def plotmap(fig1,ehonan,nav_lon,nav_lat,plto='tmp_plot',cm_base='viridis',vmin='0',vmax='0',Nincr=10,typlo='contourf',Nbar=10,glo=True,coastL=False,coastC=False,xlim=(0,10), ylim=(0,10),su='b',so='k',loncentr=0.,latcentr=0.,labelplt="",gloproj='Robinson',edgcol1='#585858',edgcol2='w',subplt=[1,1,1],scattcmap=True):
         '''
         PURPOSE: Plot regional or global map of gridded data (shading).
         Uses Cartopy, xarray, matplotlib, numpy.
@@ -110,6 +139,8 @@ def plotmap(fig1,ehonan,nav_lon,nav_lat,plto='tmp_plot',cm_base='viridis',vmin='
         - labelplt: label of the colorbar (defaut is nothing)
         - edgcol1: color of the line around the global proj, defaut is '#585858'
         - edgcol2: color of the frame around the regional map, defaut is 'w'
+        - subplt: defaut subplt=[1,1,1] use in case of subploting. See example in my notrebooks.
+        - scattcmap: Can be used to switch off the colorbar. Also, in scatterplot mode, if True scatterplot will be plotted with ehonan values and cmap colormap. If False, scatterplot will be plotted wih a uniform color scattco (defaut is True)
     
         '''
         
@@ -156,13 +187,14 @@ def plotmap(fig1,ehonan,nav_lon,nav_lat,plto='tmp_plot',cm_base='viridis',vmin='
           
         if glo:
             if gloproj=='Robinson':
-                ax = plt.axes(projection=ccrs.Robinson(central_longitude=loncentr))
+
+                ax = plt.subplot(subplt[0], subplt[1], subplt[2], projection=ccrs.Robinson(central_longitude=loncentr))
             if gloproj=='Orthographic':
-                ax = plt.axes(projection=ccrs.Orthographic(central_longitude=loncentr,central_latitude=latcentr))
+                ax = plt.subplot(subplt[0], subplt[1], subplt[2], projection=ccrs.Orthographic(central_longitude=loncentr,central_latitude=latcentr))
             # marker size
             sm=0.1
         else:
-            ax = plt.axes(projection= ccrs.PlateCarree())
+            ax = plt.subplot(subplt[0], subplt[1], subplt[2], projection= ccrs.PlateCarree())
             # marker size
             sm=0.5
 
@@ -209,15 +241,16 @@ def plotmap(fig1,ehonan,nav_lon,nav_lat,plto='tmp_plot',cm_base='viridis',vmin='
             #limits
             plt.xlim(xlim)
             plt.ylim(ylim) 
-
-        # plot colorbar
-        cb = plt.colorbar(cs, extend='both',  pad=0.04, orientation='horizontal', shrink=0.75)
-        cb.ax.tick_params(labelsize=15) 
-        cb.set_label(labelplt,size=15)
-        ticks = np.linspace(levels.min(),levels.max(),Nbar)
-        cb.set_ticks(ticks)
-        new_tickslabels = ["%.2f" % i for i in ticks]
-        cb.set_ticklabels(new_tickslabels)
+        
+        if scattcmap:
+            # plot colorbar
+            cb = plt.colorbar(cs, extend='both',  pad=0.04, orientation='horizontal', shrink=0.5)
+            cb.ax.tick_params(labelsize=15) 
+            cb.set_label(labelplt,size=15)
+            ticks = np.linspace(levels.min(),levels.max(),Nbar)
+            cb.set_ticks(ticks)
+            new_tickslabels = ["%.2f" % i for i in ticks]
+            cb.set_ticklabels(new_tickslabels)
 
         
 def printdatestring(time,it):
@@ -246,3 +279,46 @@ def printdatestring(time,it):
         else:
             add=str()    
         return(str(time.year[it])+"-"+adm+str(time.month[it])+"-"+add+str(time.day[it])+" "+adh+str(time.hour[it])+":00")
+
+def printdatestring(time,it):
+        '''
+        Read time in xarray (datetime64 format) and return date in a set format (string)
+
+        Parameters:
+        time is the time coordinnate of an xarray, converted to index. For example time as input can be time = air.time.to_index() where air is the xarray of the temperature.
+        it is the time index of the date to read and print
+        '''    
+        
+        ## imports
+        # xarray
+        import xarray as xr
+        
+        if (time.hour[it]<12):
+            adh=str("0")
+        else:
+            adh=str()
+        if (time.month[it]<10):
+            adm=str("0")
+        else:
+            adm=str()
+        if (time.day[it]<10):
+            add=str("0")
+        else:
+            add=str()    
+        return(str(time.year[it])+"-"+adm+str(time.month[it])+"-"+add+str(time.day[it])+" "+adh+str(time.hour[it])+":00")
+
+    
+def printdayinyear(time,it):
+        '''
+        Read time in xarray (datetime64 format) and return date in a set format for day in year(string) such as: Mar. 3, or Apr. 26
+
+        Parameters:
+        time is the time coordinnate of an xarray, converted to index. For example time as input can be time = air.time.to_index() where air is the xarray of the temperature.
+        it is the time index of the date to read and print
+        '''    
+        
+        ## imports
+        # xarray
+        import xarray as xr
+           
+        return(str(time.month_name()[it][0:3])+". "+str(time.day[it]))
