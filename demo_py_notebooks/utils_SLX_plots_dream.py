@@ -320,5 +320,35 @@ def printdayinyear(time,it):
         ## imports
         # xarray
         import xarray as xr
-           
-        return(str(time.month_name()[it][0:3])+". "+str(time.day[it]))
+        if (time.day[it]>9):
+            date_string_out = str(time.month_name()[it][0:3])+". "+str(time.day[it])
+        else:
+            date_string_out = str(time.month_name()[it][0:3])+".  "+str(time.day[it])
+        return(date_string_out)
+    
+def printdayofyearwthtime(time,it):
+        '''
+        Read time in xarray (datetime64 format) and return date in a set format for day in year(string) such as: "Mar. 3, 00H", or "Apr. 26, 18H"
+
+        Parameters:
+        time is the time coordinnate of an xarray, converted to index. For example time as input can be time = air.time.to_index() where air is the xarray of the temperature.
+        it is the time index of the date to read and print
+        '''    
+        ## imports
+        # xarray
+        import xarray as xr
+        
+        if (time.dayofyear[it])>99:
+            strspace1=''
+        else:
+            if (time.dayofyear[it])<10:
+                strspace1='  '
+            else:
+                strspace1=' '
+        if (time.hour[it])>9:
+            strspace2=''
+        else:
+            strspace2=' '
+        
+        date_string_out='Day '+strspace1+str(time.dayofyear[it])+", "+strspace2+str(time.hour[it])+"H"
+        return(date_string_out)
