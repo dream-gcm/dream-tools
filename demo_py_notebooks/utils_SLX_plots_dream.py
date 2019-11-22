@@ -187,10 +187,13 @@ def plotmap(fig1,ehonan,nav_lon,nav_lat,plto='tmp_plot',cm_base='viridis',vmin='
           
         if glo:
             if gloproj=='Robinson':
-
                 ax = plt.subplot(subplt[0], subplt[1], subplt[2], projection=ccrs.Robinson(central_longitude=loncentr))
             if gloproj=='Orthographic':
                 ax = plt.subplot(subplt[0], subplt[1], subplt[2], projection=ccrs.Orthographic(central_longitude=loncentr,central_latitude=latcentr))
+            if gloproj=='NorthPolarStereo':
+                ax = plt.subplot(subplt[0], subplt[1], subplt[2], projection=ccrs.NorthPolarStereo(central_longitude=loncentr))
+                ax.set_extent([0, 360, 0, 90], crs=ccrs.PlateCarree())
+                
             # marker size
             sm=0.1
         else:
