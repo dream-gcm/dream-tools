@@ -9,6 +9,8 @@ wip*
 *.pdf
 *.eps
 *.ps
+*.mp4
+*.gif
 
 # data files
 *.nc

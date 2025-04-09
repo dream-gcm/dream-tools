@@ -203,9 +203,9 @@ def plotmap(fig1,ehonan,nav_lon,nav_lat,plto='tmp_plot',cm_base='viridis',vmin='
 
         if glo:
             ax.set_global() 
-            ax.outline_patch.set_edgecolor(edgcol1)
-        else:
-            ax.outline_patch.set_edgecolor(edgcol2)
+            #ax.outline_patch.set_edgecolor(edgcol1)
+        #else:
+            #ax.outline_patch.set_edgecolor(edgcol2)
             
 
         # grid and grid labels on map
@@ -231,10 +231,10 @@ def plotmap(fig1,ehonan,nav_lon,nav_lat,plto='tmp_plot',cm_base='viridis',vmin='
         ### PLOTS:
         
         if typlo=='pcolormesh':
-            cs  = plt.pcolormesh(nav_lon, nav_lat, ehonan,cmap=cmap,transform=trdata,norm=norm,vmin=vmin,vmax=vmax)
+            cs  = ax.pcolormesh(nav_lon, nav_lat, ehonan,cmap=cmap,transform=trdata,norm=norm)
         
         if typlo=='contourf':
-            cs  = plt.contourf(nav_lon, nav_lat, ehonan,transform=trdata,levels=levels,norm=norm,cmap=cmap,extend='both')
+            cs  = ax.contourf(nav_lon, nav_lat, ehonan,transform=trdata,levels=levels,norm=norm,cmap=cmap,extend='both')
 
         if typlo=='scatter':
             print('Sorry, not implemented yet. Will be soon.')
@@ -254,6 +254,7 @@ def plotmap(fig1,ehonan,nav_lon,nav_lat,plto='tmp_plot',cm_base='viridis',vmin='
             cb.set_ticks(ticks)
             new_tickslabels = ["%.2f" % i for i in ticks]
             cb.set_ticklabels(new_tickslabels)
+        return cs
 
         
 def printdatestring(time,it):
